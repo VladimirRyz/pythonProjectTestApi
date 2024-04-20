@@ -1,9 +1,6 @@
 # Импортируем модуль sender_stand_request, содержащий функции для отправки HTTP-запросов к API.
 import sender_stand_request
-
-# Импортируем модуль data, в котором определены данные, необходимые для HTTP-запросов.
-import data
-
+# Функция для проверки получения токена при создании нового пользователя
 def get_token():
     sender_stand_request.post_new_user()
     res = sender_stand_request.post_new_user()
@@ -11,22 +8,22 @@ def get_token():
         return res.json()['authToken']
     else:
         return ' '
+# Сравниваю переменную res на наличия в ней токена
 
-
-
+#Функция позитивных проверок
 def positive_assert(name):
     authToken = get_token()
     res = sender_stand_request.post_new_client_kit(authToken, name)
     assert res.status_code == 201
     str_name = res.json()['name']
     assert str_name == name
-
-
+# Проверяю код ответа и соответствие в ответе поля name отправленному
+# Функция негативных проверок
 def negative_assert(name):
     authToken = get_token()
     res = sender_stand_request.post_new_client_kit(authToken, name)
     assert res.status_code == 400
-
+# Тесты по номерам в соответствии с чек-листом
 def test_1():
      positive_assert('a')
 
@@ -66,5 +63,3 @@ def test_10():
 
 def test_11():
     negative_assert(123)
-
-
